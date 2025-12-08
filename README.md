@@ -28,3 +28,7 @@ This repository contains the PyTorch implementation of SPTVMod used for the Dece
 ## Computing the slicing indices and the cropping sizes
 
 This computation is unchanged from SPTMod: [https://github.com/ybourdin/sptmod?tab=readme-ov-file#computing-the-slicing-indices-and-the-cropping-sizes](https://github.com/ybourdin/sptmod?tab=readme-ov-file#computing-the-slicing-indices-and-the-cropping-sizes)
+
+## Dataset
+
+The Fast-LFO and Slow-LFO datasets we used for our experiments are available in the folders `dp4_fast_lfo_dataset` and `dp4_slow_lfo_dataset`.
