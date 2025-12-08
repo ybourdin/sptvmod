@@ -16,15 +16,14 @@ This repository contains the PyTorch implementation of SPTVMod used for the Dece
 
 ## Training
 
-At every iteration (an iteration corresponding to one update of the generator), we need to:
 
-1. Use the `set_target_length()` method to compute:
+
+- Use the `set_target_length()` method to compute:
     - the expected input length for the specified target length;
     - the index intervals to slice the tensors given to different parts of the model, here the modulation path and audio path;
     - the cropping sizes of the cropping layers.
-2. Reset the model states with `reset_states()`.
-3. To obtain the generator's output, call `forward()` with `paddingmode = CachedPadding1d.NoPadding`, and `use_spn = True` if using state prediction.
-4. To obtain the discriminator's outputs, compute the feature lists of the true and predicted outputs with `disc_features` and use `disc_from_features()` method to obtain the discriminator's outputs.
+- To obtain the generator's output, call `forward()` with `paddingmode = CachedPadding1d.NoPadding`, and `use_spn = True` if using state prediction.
+- To obtain the discriminator's outputs, compute the feature lists of the true and predicted outputs with `disc_features` and use `disc_from_features()` method to obtain the discriminator's outputs.
 
 ## Computing the slicing indices and the cropping sizes
 
