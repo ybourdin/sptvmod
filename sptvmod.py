@@ -293,11 +293,51 @@ class Model(nn.Module):
             f_activation_list, b_kernel_size,
             s_channels_list, s_kernel_size_list, s_dilation_list, tfilm_block_size, tfilm_pooling_type,
             film_hidden_neurons_list, rnn_cell, rnn_hidden_size,
-            spn, spn_use_disc_features, init_state_method, spn_bef_state_transf, spn_nn_concat_params, spn_nn_hidden_list,
+            spn, spn_use_disc_features, init_state_method, spn_nn_concat_params, spn_nn_hidden_list,
             spn_out_channels_list, spn_kernel_size_list, spn_dilation_list, spn_stride_list, spn_pooling_list, spn_pooling_type, spn_film_hidden_neurons_list,
             disc_out_channels_list, disc_kernel_size_list, disc_dilation_list, disc_stride_list, disc_pooling_list, disc_pooling_type, disc_film_hidden_neurons_list,
             **kwargs
     ):
+        """
+        Hyperparameters
+        ---------------
+        dp4_antialias (bool): whether to use the antialiasing filter at the output of the model
+        s_input_kind ("zero" or "input"): if "input", the modulation path receives the audio input, else zero
+        n_params (int): number of control parameters
+        f_conv_channels_listlist (list[list[int]]): nested list containing the number of channels in the convolutional layers for each FXBlock
+        f_conv_kernel_size_listlist (list[list[int]]): nested list containing the kernel size of the convolutional layers for each FXBlock
+        f_conv_dilation_listlist (list[list[int]]): nested list containing the dilation size of the convolutional layers for each FXBlock
+        f_conv_groups_listlist (list[list[int]]): nested list containing the number of groups of the convolutional layers for each FXBlock
+        f_activation_list (list[str]): list of the activation function in each FXBlock
+        b_kernel_size (int): kernel size of the last convolutional layer
+        s_channels_list (list[int]): list containing the number of channels in the convolution of each ModBlock
+        s_kernel_size_list (list[int]): list containing the kernel size of the convolution of each ModBlock
+        s_dilation_list (list[int]): list containing the dilation size of the convolution of each ModBlock
+        tfilm_block_size (int): pooling size in ModBlocks
+        tfilm_pooling_type ("max" or "avg"): pooling type in ModBlocks
+        film_hidden_neurons_list (list[int]): list of the number of hidden neurons for each layer of the neural networks to do FiLM
+        rnn_cell ("lstm" or "gru"): type of RNN cell
+        rnn_hidden_size (int): hidden size of the LSTM/GRU
+        spn (bool): whether to use a State Prediction Network
+        spn_use_disc_features (bool): whether to use the discriminator's features
+        init_state_method ("zero", "noise" or "angle"): method to initialize states
+        spn_nn_concat_params (bool): whether to concatenate the control parameters to discriminator's features at the input of the SPN
+        spn_nn_hidden_list (list[int]): list of the number of hidden neurons for each layer of the SPN
+        spn_out_channels_list (list[int]): ignored if using discriminator's features, list containing the number of channels in each convolution of the SPN's feature extractor
+        spn_kernel_size_list (list[int]): ignored if using discriminator's features, list containing the kernel size of each convolution of the SPN's feature extractor
+        spn_dilation_list (list[int]): ignored if using discriminator's features, list containing the dilation size of each convolution of the SPN's feature extractor
+        spn_stride_list (list[int]): ignored if using discriminator's features, list containing the stride of each convolution of the SPN's feature extractor
+        spn_pooling_list (list[int]): ignored if using discriminator's features, list containing the pooling size after each convolution of the SPN's feature extractor
+        spn_pooling_type ("max" or "avg"): ignored if using discriminator's features, pooling type used by the SPN's feature extractor
+        spn_film_hidden_neurons_list (list[int]): ignored if using discriminator's features, list of the number of hidden neurons for each layer of the neural networks to do FiLM in the SPN
+        disc_out_channels_list (list[int]): list containing the number of channels in each convolution of the discriminator's FeatBlocks
+        disc_kernel_size_list (list[int]): list containing the kernel size of each convolution of the discriminator's FeatBlocks
+        disc_dilation_list (list[int]): list containing the dilation size of each convolution of the discriminator's FeatBlocks
+        disc_stride_list (list[int]): list containing the stride of each convolution of the discriminator's FeatBlocks
+        disc_pooling_list (list[int]): list containing the pooling size after each convolution of the discriminator's FeatBlocks
+        disc_pooling_type ("max" or "avg"): pooling type used by the discriminator's FeatBlocks
+        disc_film_hidden_neurons_list (list[int]): list of the number of hidden neurons for each layer of the neural networks to do FiLM in the discriminator's FeatBlocks
+        """
         super().__init__(**kwargs)
 
         self.n_params = n_params
@@ -375,7 +415,7 @@ class Model(nn.Module):
 
         if spn:
             _spn_nn_in_size = _channels_list[-1] + (n_params if spn_nn_concat_params else 0)
-            _spn_nn_out_size = self.init_state_noise_size if spn_bef_state_transf else self.state_size_total
+            _spn_nn_out_size = self.state_size_total
             _modules = nn.ModuleList()
             for i, h in enumerate(spn_nn_hidden_list):
                 _modules.append(nn.Sequential(
