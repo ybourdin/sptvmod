@@ -1,0 +1,1773 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SPTVMod - Fast-LFO Dataset Spectrograms</title>
+        <script>
+            window.addEventListener("load", () => {
+                document.getElementById("btnToggle").addEventListener("click", (e) => {
+                    for (const name of ["img-full", "img-win"]) {
+                        for (const img of document.getElementsByClassName(name)) {
+                            if (e.target.checked) {
+                                document.getElementById("btnToggleText").innerHTML = "Display first 32768 samples"
+                                if (name == "img-full") {
+                                    img.setAttribute("hidden", "")
+                                }
+                                else {
+                                    img.removeAttribute("hidden")
+                                }
+                            }
+                            else {
+                                document.getElementById("btnToggleText").innerHTML = "Display full signal"
+                                if (name == "img-full") {
+                                    img.removeAttribute("hidden")
+                                }
+                                else {
+                                    img.setAttribute("hidden", "")
+                                }   
+                            }
+                        }
+                    }
+                })
+            })
+        </script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1.5.10/css/pico.min.css">
+        <style>
+            .toggle {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+            }
+
+            .toggle input {
+            display: none;
+            }
+
+            .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #333;
+            transition: 0.4s;
+            border-radius: 34px;
+            }
+
+            .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: #FFF;
+            transition: 0.4s;
+            border-radius: 50%;
+            }
+
+            input:checked + .slider {
+            background-color: #060;
+            }
+
+            input:checked + .slider:before {
+            transform: translateX(26px);
+            }
+
+            .img-full {
+                width: 100%;
+            }
+            .img-win {
+                width: 100%;
+            }
+
+            .sticky    /* keep table header to the top when scrolling */
+            {
+                position: sticky;
+                top: 0px;
+            }
+
+            th {
+                color: rgb(211, 211, 219);
+                mix-blend-mode: difference;
+            }
+
+            th, td {
+                text-align: center;
+            }
+
+            body {
+                margin-left:10px;
+                margin-right:10px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>SPTVMod - Fast-LFO Dataset Spectrograms</h1>
+
+        <div class="sticky" style="z-index:1000;">
+            <label class="toggle">
+                <input type="checkbox" id="btnToggle" name="btnToggle" />
+                <span class="slider"></span>
+            </label>
+            <span id="btnToggleText" style="display:inline-block; vertical-align: top;">Display full signal</span>
+        </div>
+        
+
+        <table>
+            <tr>
+                
+                <th class="sticky">Adversarial Phase<br /><small>Checkpoint: best modulation loss</small></th>
+                
+                <th class="sticky">Spectral Fine-tuning<br />(no SPN pre-training)<br /><small>Checkpoint: best modulation loss</small></th>
+                
+                <th class="sticky">Spectral Fine-tuning<br />(no SPN pre-training)<br /><small>Checkpoint: best spectral loss</small></th>
+                
+                <th class="sticky">Spectral Fine-tuning<br />(with SPN pre-training)<br /><small>Checkpoint: best modulation loss</small></th>
+                
+                <th class="sticky">Spectral Fine-tuning<br />(with SPN pre-training)<br /><small>Checkpoint: best spectral loss</small></th>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\12-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\12-rate80-group11b-val_modspec_loss-win2.02495.webp">
+                    <img class="img-win" src="rate80-group11b-win\12-rate80-group11b-val_modspec_loss-win2.02495.webp" alt="rate80-group11b-win\12-rate80-group11b-val_modspec_loss-win2.02495.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\12-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\12-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\12-rate80-group12b-val_modspec_loss-win1.01423.webp">
+                    <img class="img-win" src="rate80-group12b-win\12-rate80-group12b-val_modspec_loss-win1.01423.webp" alt="rate80-group12b-win\12-rate80-group12b-val_modspec_loss-win1.01423.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\12-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\12-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\12-rate80-group12b-val_mrstft_dp4-win0.87731.webp">
+                    <img class="img-win" src="rate80-group12b-win\12-rate80-group12b-val_mrstft_dp4-win0.87731.webp" alt="rate80-group12b-win\12-rate80-group12b-val_mrstft_dp4-win0.87731.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\12-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\12-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\12-rate80-group14b-val_modspec_loss-win0.97628.webp">
+                    <img class="img-win" src="rate80-group14b-win\12-rate80-group14b-val_modspec_loss-win0.97628.webp" alt="rate80-group14b-win\12-rate80-group14b-val_modspec_loss-win0.97628.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\12-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\12-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\12-rate80-group14b-val_mrstft_dp4-win0.85316.webp">
+                    <img class="img-win" src="rate80-group14b-win\12-rate80-group14b-val_mrstft_dp4-win0.85316.webp" alt="rate80-group14b-win\12-rate80-group14b-val_mrstft_dp4-win0.85316.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\12-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\13-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\13-rate80-group11b-val_modspec_loss-win2.05608.webp">
+                    <img class="img-win" src="rate80-group11b-win\13-rate80-group11b-val_modspec_loss-win2.05608.webp" alt="rate80-group11b-win\13-rate80-group11b-val_modspec_loss-win2.05608.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\13-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\13-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\13-rate80-group12b-val_modspec_loss-win1.17288.webp">
+                    <img class="img-win" src="rate80-group12b-win\13-rate80-group12b-val_modspec_loss-win1.17288.webp" alt="rate80-group12b-win\13-rate80-group12b-val_modspec_loss-win1.17288.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\13-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\13-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\13-rate80-group12b-val_mrstft_dp4-win0.89535.webp">
+                    <img class="img-win" src="rate80-group12b-win\13-rate80-group12b-val_mrstft_dp4-win0.89535.webp" alt="rate80-group12b-win\13-rate80-group12b-val_mrstft_dp4-win0.89535.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\13-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\13-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\13-rate80-group14b-val_modspec_loss-win1.21194.webp">
+                    <img class="img-win" src="rate80-group14b-win\13-rate80-group14b-val_modspec_loss-win1.21194.webp" alt="rate80-group14b-win\13-rate80-group14b-val_modspec_loss-win1.21194.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\13-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\13-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\13-rate80-group14b-val_mrstft_dp4-win1.11287.webp">
+                    <img class="img-win" src="rate80-group14b-win\13-rate80-group14b-val_mrstft_dp4-win1.11287.webp" alt="rate80-group14b-win\13-rate80-group14b-val_mrstft_dp4-win1.11287.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\13-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\14-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\14-rate80-group11b-val_modspec_loss-win2.19349.webp">
+                    <img class="img-win" src="rate80-group11b-win\14-rate80-group11b-val_modspec_loss-win2.19349.webp" alt="rate80-group11b-win\14-rate80-group11b-val_modspec_loss-win2.19349.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\14-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\14-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\14-rate80-group12b-val_modspec_loss-win1.41199.webp">
+                    <img class="img-win" src="rate80-group12b-win\14-rate80-group12b-val_modspec_loss-win1.41199.webp" alt="rate80-group12b-win\14-rate80-group12b-val_modspec_loss-win1.41199.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\14-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\14-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\14-rate80-group12b-val_mrstft_dp4-win0.99027.webp">
+                    <img class="img-win" src="rate80-group12b-win\14-rate80-group12b-val_mrstft_dp4-win0.99027.webp" alt="rate80-group12b-win\14-rate80-group12b-val_mrstft_dp4-win0.99027.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\14-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\14-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\14-rate80-group14b-val_modspec_loss-win1.04553.webp">
+                    <img class="img-win" src="rate80-group14b-win\14-rate80-group14b-val_modspec_loss-win1.04553.webp" alt="rate80-group14b-win\14-rate80-group14b-val_modspec_loss-win1.04553.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\14-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\14-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\14-rate80-group14b-val_mrstft_dp4-win0.99253.webp">
+                    <img class="img-win" src="rate80-group14b-win\14-rate80-group14b-val_mrstft_dp4-win0.99253.webp" alt="rate80-group14b-win\14-rate80-group14b-val_mrstft_dp4-win0.99253.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\14-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\15-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\15-rate80-group11b-val_modspec_loss-win2.48260.webp">
+                    <img class="img-win" src="rate80-group11b-win\15-rate80-group11b-val_modspec_loss-win2.48260.webp" alt="rate80-group11b-win\15-rate80-group11b-val_modspec_loss-win2.48260.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\15-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\15-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\15-rate80-group12b-val_modspec_loss-win0.87385.webp">
+                    <img class="img-win" src="rate80-group12b-win\15-rate80-group12b-val_modspec_loss-win0.87385.webp" alt="rate80-group12b-win\15-rate80-group12b-val_modspec_loss-win0.87385.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\15-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\15-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\15-rate80-group12b-val_mrstft_dp4-win0.87909.webp">
+                    <img class="img-win" src="rate80-group12b-win\15-rate80-group12b-val_mrstft_dp4-win0.87909.webp" alt="rate80-group12b-win\15-rate80-group12b-val_mrstft_dp4-win0.87909.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\15-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\15-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\15-rate80-group14b-val_modspec_loss-win1.00508.webp">
+                    <img class="img-win" src="rate80-group14b-win\15-rate80-group14b-val_modspec_loss-win1.00508.webp" alt="rate80-group14b-win\15-rate80-group14b-val_modspec_loss-win1.00508.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\15-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\15-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\15-rate80-group14b-val_mrstft_dp4-win0.75793.webp">
+                    <img class="img-win" src="rate80-group14b-win\15-rate80-group14b-val_mrstft_dp4-win0.75793.webp" alt="rate80-group14b-win\15-rate80-group14b-val_mrstft_dp4-win0.75793.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\15-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\16-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\16-rate80-group11b-val_modspec_loss-win2.11046.webp">
+                    <img class="img-win" src="rate80-group11b-win\16-rate80-group11b-val_modspec_loss-win2.11046.webp" alt="rate80-group11b-win\16-rate80-group11b-val_modspec_loss-win2.11046.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\16-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\16-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\16-rate80-group12b-val_modspec_loss-win2.43916.webp">
+                    <img class="img-win" src="rate80-group12b-win\16-rate80-group12b-val_modspec_loss-win2.43916.webp" alt="rate80-group12b-win\16-rate80-group12b-val_modspec_loss-win2.43916.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\16-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\16-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\16-rate80-group12b-val_mrstft_dp4-win1.03772.webp">
+                    <img class="img-win" src="rate80-group12b-win\16-rate80-group12b-val_mrstft_dp4-win1.03772.webp" alt="rate80-group12b-win\16-rate80-group12b-val_mrstft_dp4-win1.03772.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\16-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\16-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\16-rate80-group14b-val_modspec_loss-win0.71492.webp">
+                    <img class="img-win" src="rate80-group14b-win\16-rate80-group14b-val_modspec_loss-win0.71492.webp" alt="rate80-group14b-win\16-rate80-group14b-val_modspec_loss-win0.71492.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\16-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\16-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\16-rate80-group14b-val_mrstft_dp4-win0.97040.webp">
+                    <img class="img-win" src="rate80-group14b-win\16-rate80-group14b-val_mrstft_dp4-win0.97040.webp" alt="rate80-group14b-win\16-rate80-group14b-val_mrstft_dp4-win0.97040.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\16-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\17-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\17-rate80-group11b-val_modspec_loss-win1.95625.webp">
+                    <img class="img-win" src="rate80-group11b-win\17-rate80-group11b-val_modspec_loss-win1.95625.webp" alt="rate80-group11b-win\17-rate80-group11b-val_modspec_loss-win1.95625.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\17-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\17-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\17-rate80-group12b-val_modspec_loss-win0.94269.webp">
+                    <img class="img-win" src="rate80-group12b-win\17-rate80-group12b-val_modspec_loss-win0.94269.webp" alt="rate80-group12b-win\17-rate80-group12b-val_modspec_loss-win0.94269.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\17-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\17-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\17-rate80-group12b-val_mrstft_dp4-win0.90954.webp">
+                    <img class="img-win" src="rate80-group12b-win\17-rate80-group12b-val_mrstft_dp4-win0.90954.webp" alt="rate80-group12b-win\17-rate80-group12b-val_mrstft_dp4-win0.90954.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\17-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\17-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\17-rate80-group14b-val_modspec_loss-win1.16687.webp">
+                    <img class="img-win" src="rate80-group14b-win\17-rate80-group14b-val_modspec_loss-win1.16687.webp" alt="rate80-group14b-win\17-rate80-group14b-val_modspec_loss-win1.16687.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\17-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\17-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\17-rate80-group14b-val_mrstft_dp4-win1.00081.webp">
+                    <img class="img-win" src="rate80-group14b-win\17-rate80-group14b-val_mrstft_dp4-win1.00081.webp" alt="rate80-group14b-win\17-rate80-group14b-val_mrstft_dp4-win1.00081.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\17-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\18-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\18-rate80-group11b-val_modspec_loss-win4.87634.webp">
+                    <img class="img-win" src="rate80-group11b-win\18-rate80-group11b-val_modspec_loss-win4.87634.webp" alt="rate80-group11b-win\18-rate80-group11b-val_modspec_loss-win4.87634.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\18-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\18-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\18-rate80-group12b-val_modspec_loss-win1.11468.webp">
+                    <img class="img-win" src="rate80-group12b-win\18-rate80-group12b-val_modspec_loss-win1.11468.webp" alt="rate80-group12b-win\18-rate80-group12b-val_modspec_loss-win1.11468.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\18-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\18-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\18-rate80-group12b-val_mrstft_dp4-win0.78965.webp">
+                    <img class="img-win" src="rate80-group12b-win\18-rate80-group12b-val_mrstft_dp4-win0.78965.webp" alt="rate80-group12b-win\18-rate80-group12b-val_mrstft_dp4-win0.78965.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\18-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\18-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\18-rate80-group14b-val_modspec_loss-win0.93855.webp">
+                    <img class="img-win" src="rate80-group14b-win\18-rate80-group14b-val_modspec_loss-win0.93855.webp" alt="rate80-group14b-win\18-rate80-group14b-val_modspec_loss-win0.93855.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\18-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\18-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\18-rate80-group14b-val_mrstft_dp4-win0.94704.webp">
+                    <img class="img-win" src="rate80-group14b-win\18-rate80-group14b-val_mrstft_dp4-win0.94704.webp" alt="rate80-group14b-win\18-rate80-group14b-val_mrstft_dp4-win0.94704.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\18-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\19-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\19-rate80-group11b-val_modspec_loss-win2.93088.webp">
+                    <img class="img-win" src="rate80-group11b-win\19-rate80-group11b-val_modspec_loss-win2.93088.webp" alt="rate80-group11b-win\19-rate80-group11b-val_modspec_loss-win2.93088.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\19-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\19-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\19-rate80-group12b-val_modspec_loss-win7.92014.webp">
+                    <img class="img-win" src="rate80-group12b-win\19-rate80-group12b-val_modspec_loss-win7.92014.webp" alt="rate80-group12b-win\19-rate80-group12b-val_modspec_loss-win7.92014.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\19-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\19-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\19-rate80-group12b-val_mrstft_dp4-win0.85931.webp">
+                    <img class="img-win" src="rate80-group12b-win\19-rate80-group12b-val_mrstft_dp4-win0.85931.webp" alt="rate80-group12b-win\19-rate80-group12b-val_mrstft_dp4-win0.85931.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\19-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\19-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\19-rate80-group14b-val_modspec_loss-win1.72777.webp">
+                    <img class="img-win" src="rate80-group14b-win\19-rate80-group14b-val_modspec_loss-win1.72777.webp" alt="rate80-group14b-win\19-rate80-group14b-val_modspec_loss-win1.72777.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\19-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\19-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\19-rate80-group14b-val_mrstft_dp4-win3.96230.webp">
+                    <img class="img-win" src="rate80-group14b-win\19-rate80-group14b-val_mrstft_dp4-win3.96230.webp" alt="rate80-group14b-win\19-rate80-group14b-val_mrstft_dp4-win3.96230.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\19-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\20-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\20-rate80-group11b-val_modspec_loss-win3.57706.webp">
+                    <img class="img-win" src="rate80-group11b-win\20-rate80-group11b-val_modspec_loss-win3.57706.webp" alt="rate80-group11b-win\20-rate80-group11b-val_modspec_loss-win3.57706.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\20-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\20-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\20-rate80-group12b-val_modspec_loss-win10.18860.webp">
+                    <img class="img-win" src="rate80-group12b-win\20-rate80-group12b-val_modspec_loss-win10.18860.webp" alt="rate80-group12b-win\20-rate80-group12b-val_modspec_loss-win10.18860.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\20-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\20-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\20-rate80-group12b-val_mrstft_dp4-win6.82872.webp">
+                    <img class="img-win" src="rate80-group12b-win\20-rate80-group12b-val_mrstft_dp4-win6.82872.webp" alt="rate80-group12b-win\20-rate80-group12b-val_mrstft_dp4-win6.82872.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\20-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\20-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\20-rate80-group14b-val_modspec_loss-win1.84640.webp">
+                    <img class="img-win" src="rate80-group14b-win\20-rate80-group14b-val_modspec_loss-win1.84640.webp" alt="rate80-group14b-win\20-rate80-group14b-val_modspec_loss-win1.84640.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\20-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\20-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\20-rate80-group14b-val_mrstft_dp4-win0.95013.webp">
+                    <img class="img-win" src="rate80-group14b-win\20-rate80-group14b-val_mrstft_dp4-win0.95013.webp" alt="rate80-group14b-win\20-rate80-group14b-val_mrstft_dp4-win0.95013.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\20-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\21-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\21-rate80-group11b-val_modspec_loss-win1.73331.webp">
+                    <img class="img-win" src="rate80-group11b-win\21-rate80-group11b-val_modspec_loss-win1.73331.webp" alt="rate80-group11b-win\21-rate80-group11b-val_modspec_loss-win1.73331.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\21-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\21-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\21-rate80-group12b-val_modspec_loss-win0.92935.webp">
+                    <img class="img-win" src="rate80-group12b-win\21-rate80-group12b-val_modspec_loss-win0.92935.webp" alt="rate80-group12b-win\21-rate80-group12b-val_modspec_loss-win0.92935.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\21-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\21-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\21-rate80-group12b-val_mrstft_dp4-win0.83847.webp">
+                    <img class="img-win" src="rate80-group12b-win\21-rate80-group12b-val_mrstft_dp4-win0.83847.webp" alt="rate80-group12b-win\21-rate80-group12b-val_mrstft_dp4-win0.83847.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\21-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\21-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\21-rate80-group14b-val_modspec_loss-win0.99920.webp">
+                    <img class="img-win" src="rate80-group14b-win\21-rate80-group14b-val_modspec_loss-win0.99920.webp" alt="rate80-group14b-win\21-rate80-group14b-val_modspec_loss-win0.99920.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\21-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\21-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\21-rate80-group14b-val_mrstft_dp4-win0.82543.webp">
+                    <img class="img-win" src="rate80-group14b-win\21-rate80-group14b-val_mrstft_dp4-win0.82543.webp" alt="rate80-group14b-win\21-rate80-group14b-val_mrstft_dp4-win0.82543.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\21-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\22-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\22-rate80-group11b-val_modspec_loss-win1.98691.webp">
+                    <img class="img-win" src="rate80-group11b-win\22-rate80-group11b-val_modspec_loss-win1.98691.webp" alt="rate80-group11b-win\22-rate80-group11b-val_modspec_loss-win1.98691.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\22-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\22-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\22-rate80-group12b-val_modspec_loss-win0.99627.webp">
+                    <img class="img-win" src="rate80-group12b-win\22-rate80-group12b-val_modspec_loss-win0.99627.webp" alt="rate80-group12b-win\22-rate80-group12b-val_modspec_loss-win0.99627.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\22-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\22-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\22-rate80-group12b-val_mrstft_dp4-win0.85988.webp">
+                    <img class="img-win" src="rate80-group12b-win\22-rate80-group12b-val_mrstft_dp4-win0.85988.webp" alt="rate80-group12b-win\22-rate80-group12b-val_mrstft_dp4-win0.85988.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\22-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\22-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\22-rate80-group14b-val_modspec_loss-win1.02079.webp">
+                    <img class="img-win" src="rate80-group14b-win\22-rate80-group14b-val_modspec_loss-win1.02079.webp" alt="rate80-group14b-win\22-rate80-group14b-val_modspec_loss-win1.02079.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\22-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\22-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\22-rate80-group14b-val_mrstft_dp4-win0.82330.webp">
+                    <img class="img-win" src="rate80-group14b-win\22-rate80-group14b-val_mrstft_dp4-win0.82330.webp" alt="rate80-group14b-win\22-rate80-group14b-val_mrstft_dp4-win0.82330.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\22-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\23-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\23-rate80-group11b-val_modspec_loss-win2.39554.webp">
+                    <img class="img-win" src="rate80-group11b-win\23-rate80-group11b-val_modspec_loss-win2.39554.webp" alt="rate80-group11b-win\23-rate80-group11b-val_modspec_loss-win2.39554.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\23-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\23-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\23-rate80-group12b-val_modspec_loss-win1.20127.webp">
+                    <img class="img-win" src="rate80-group12b-win\23-rate80-group12b-val_modspec_loss-win1.20127.webp" alt="rate80-group12b-win\23-rate80-group12b-val_modspec_loss-win1.20127.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\23-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\23-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\23-rate80-group12b-val_mrstft_dp4-win0.97668.webp">
+                    <img class="img-win" src="rate80-group12b-win\23-rate80-group12b-val_mrstft_dp4-win0.97668.webp" alt="rate80-group12b-win\23-rate80-group12b-val_mrstft_dp4-win0.97668.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\23-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\23-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\23-rate80-group14b-val_modspec_loss-win1.22439.webp">
+                    <img class="img-win" src="rate80-group14b-win\23-rate80-group14b-val_modspec_loss-win1.22439.webp" alt="rate80-group14b-win\23-rate80-group14b-val_modspec_loss-win1.22439.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\23-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\23-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\23-rate80-group14b-val_mrstft_dp4-win1.01889.webp">
+                    <img class="img-win" src="rate80-group14b-win\23-rate80-group14b-val_mrstft_dp4-win1.01889.webp" alt="rate80-group14b-win\23-rate80-group14b-val_mrstft_dp4-win1.01889.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\23-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\36-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\36-rate80-group11b-val_modspec_loss-win1.70852.webp">
+                    <img class="img-win" src="rate80-group11b-win\36-rate80-group11b-val_modspec_loss-win1.70852.webp" alt="rate80-group11b-win\36-rate80-group11b-val_modspec_loss-win1.70852.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\36-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\36-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\36-rate80-group12b-val_modspec_loss-win0.94721.webp">
+                    <img class="img-win" src="rate80-group12b-win\36-rate80-group12b-val_modspec_loss-win0.94721.webp" alt="rate80-group12b-win\36-rate80-group12b-val_modspec_loss-win0.94721.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\36-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\36-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\36-rate80-group12b-val_mrstft_dp4-win0.85594.webp">
+                    <img class="img-win" src="rate80-group12b-win\36-rate80-group12b-val_mrstft_dp4-win0.85594.webp" alt="rate80-group12b-win\36-rate80-group12b-val_mrstft_dp4-win0.85594.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\36-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\36-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\36-rate80-group14b-val_modspec_loss-win0.89852.webp">
+                    <img class="img-win" src="rate80-group14b-win\36-rate80-group14b-val_modspec_loss-win0.89852.webp" alt="rate80-group14b-win\36-rate80-group14b-val_modspec_loss-win0.89852.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\36-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\36-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\36-rate80-group14b-val_mrstft_dp4-win1.02708.webp">
+                    <img class="img-win" src="rate80-group14b-win\36-rate80-group14b-val_mrstft_dp4-win1.02708.webp" alt="rate80-group14b-win\36-rate80-group14b-val_mrstft_dp4-win1.02708.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\36-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\37-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\37-rate80-group11b-val_modspec_loss-win2.42715.webp">
+                    <img class="img-win" src="rate80-group11b-win\37-rate80-group11b-val_modspec_loss-win2.42715.webp" alt="rate80-group11b-win\37-rate80-group11b-val_modspec_loss-win2.42715.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\37-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\37-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\37-rate80-group12b-val_modspec_loss-win0.89034.webp">
+                    <img class="img-win" src="rate80-group12b-win\37-rate80-group12b-val_modspec_loss-win0.89034.webp" alt="rate80-group12b-win\37-rate80-group12b-val_modspec_loss-win0.89034.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\37-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\37-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\37-rate80-group12b-val_mrstft_dp4-win0.82453.webp">
+                    <img class="img-win" src="rate80-group12b-win\37-rate80-group12b-val_mrstft_dp4-win0.82453.webp" alt="rate80-group12b-win\37-rate80-group12b-val_mrstft_dp4-win0.82453.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\37-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\37-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\37-rate80-group14b-val_modspec_loss-win0.77068.webp">
+                    <img class="img-win" src="rate80-group14b-win\37-rate80-group14b-val_modspec_loss-win0.77068.webp" alt="rate80-group14b-win\37-rate80-group14b-val_modspec_loss-win0.77068.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\37-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\37-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\37-rate80-group14b-val_mrstft_dp4-win0.74766.webp">
+                    <img class="img-win" src="rate80-group14b-win\37-rate80-group14b-val_mrstft_dp4-win0.74766.webp" alt="rate80-group14b-win\37-rate80-group14b-val_mrstft_dp4-win0.74766.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\37-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\38-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\38-rate80-group11b-val_modspec_loss-win1.68451.webp">
+                    <img class="img-win" src="rate80-group11b-win\38-rate80-group11b-val_modspec_loss-win1.68451.webp" alt="rate80-group11b-win\38-rate80-group11b-val_modspec_loss-win1.68451.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\38-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\38-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\38-rate80-group12b-val_modspec_loss-win0.73549.webp">
+                    <img class="img-win" src="rate80-group12b-win\38-rate80-group12b-val_modspec_loss-win0.73549.webp" alt="rate80-group12b-win\38-rate80-group12b-val_modspec_loss-win0.73549.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\38-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\38-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\38-rate80-group12b-val_mrstft_dp4-win0.97629.webp">
+                    <img class="img-win" src="rate80-group12b-win\38-rate80-group12b-val_mrstft_dp4-win0.97629.webp" alt="rate80-group12b-win\38-rate80-group12b-val_mrstft_dp4-win0.97629.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\38-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\38-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\38-rate80-group14b-val_modspec_loss-win0.95330.webp">
+                    <img class="img-win" src="rate80-group14b-win\38-rate80-group14b-val_modspec_loss-win0.95330.webp" alt="rate80-group14b-win\38-rate80-group14b-val_modspec_loss-win0.95330.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\38-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\38-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\38-rate80-group14b-val_mrstft_dp4-win0.99441.webp">
+                    <img class="img-win" src="rate80-group14b-win\38-rate80-group14b-val_mrstft_dp4-win0.99441.webp" alt="rate80-group14b-win\38-rate80-group14b-val_mrstft_dp4-win0.99441.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\38-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\39-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\39-rate80-group11b-val_modspec_loss-win3.04135.webp">
+                    <img class="img-win" src="rate80-group11b-win\39-rate80-group11b-val_modspec_loss-win3.04135.webp" alt="rate80-group11b-win\39-rate80-group11b-val_modspec_loss-win3.04135.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\39-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\39-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\39-rate80-group12b-val_modspec_loss-win0.95692.webp">
+                    <img class="img-win" src="rate80-group12b-win\39-rate80-group12b-val_modspec_loss-win0.95692.webp" alt="rate80-group12b-win\39-rate80-group12b-val_modspec_loss-win0.95692.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\39-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\39-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\39-rate80-group12b-val_mrstft_dp4-win0.82899.webp">
+                    <img class="img-win" src="rate80-group12b-win\39-rate80-group12b-val_mrstft_dp4-win0.82899.webp" alt="rate80-group12b-win\39-rate80-group12b-val_mrstft_dp4-win0.82899.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\39-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\39-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\39-rate80-group14b-val_modspec_loss-win1.12928.webp">
+                    <img class="img-win" src="rate80-group14b-win\39-rate80-group14b-val_modspec_loss-win1.12928.webp" alt="rate80-group14b-win\39-rate80-group14b-val_modspec_loss-win1.12928.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\39-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\39-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\39-rate80-group14b-val_mrstft_dp4-win0.84748.webp">
+                    <img class="img-win" src="rate80-group14b-win\39-rate80-group14b-val_mrstft_dp4-win0.84748.webp" alt="rate80-group14b-win\39-rate80-group14b-val_mrstft_dp4-win0.84748.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\39-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\40-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\40-rate80-group11b-val_modspec_loss-win2.42531.webp">
+                    <img class="img-win" src="rate80-group11b-win\40-rate80-group11b-val_modspec_loss-win2.42531.webp" alt="rate80-group11b-win\40-rate80-group11b-val_modspec_loss-win2.42531.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\40-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\40-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\40-rate80-group12b-val_modspec_loss-win3.40747.webp">
+                    <img class="img-win" src="rate80-group12b-win\40-rate80-group12b-val_modspec_loss-win3.40747.webp" alt="rate80-group12b-win\40-rate80-group12b-val_modspec_loss-win3.40747.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\40-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\40-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\40-rate80-group12b-val_mrstft_dp4-win2.88235.webp">
+                    <img class="img-win" src="rate80-group12b-win\40-rate80-group12b-val_mrstft_dp4-win2.88235.webp" alt="rate80-group12b-win\40-rate80-group12b-val_mrstft_dp4-win2.88235.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\40-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\40-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\40-rate80-group14b-val_modspec_loss-win0.83682.webp">
+                    <img class="img-win" src="rate80-group14b-win\40-rate80-group14b-val_modspec_loss-win0.83682.webp" alt="rate80-group14b-win\40-rate80-group14b-val_modspec_loss-win0.83682.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\40-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\40-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\40-rate80-group14b-val_mrstft_dp4-win0.75761.webp">
+                    <img class="img-win" src="rate80-group14b-win\40-rate80-group14b-val_mrstft_dp4-win0.75761.webp" alt="rate80-group14b-win\40-rate80-group14b-val_mrstft_dp4-win0.75761.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\40-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\41-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\41-rate80-group11b-val_modspec_loss-win2.12600.webp">
+                    <img class="img-win" src="rate80-group11b-win\41-rate80-group11b-val_modspec_loss-win2.12600.webp" alt="rate80-group11b-win\41-rate80-group11b-val_modspec_loss-win2.12600.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\41-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\41-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\41-rate80-group12b-val_modspec_loss-win3.14189.webp">
+                    <img class="img-win" src="rate80-group12b-win\41-rate80-group12b-val_modspec_loss-win3.14189.webp" alt="rate80-group12b-win\41-rate80-group12b-val_modspec_loss-win3.14189.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\41-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\41-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\41-rate80-group12b-val_mrstft_dp4-win1.71623.webp">
+                    <img class="img-win" src="rate80-group12b-win\41-rate80-group12b-val_mrstft_dp4-win1.71623.webp" alt="rate80-group12b-win\41-rate80-group12b-val_mrstft_dp4-win1.71623.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\41-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\41-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\41-rate80-group14b-val_modspec_loss-win0.81356.webp">
+                    <img class="img-win" src="rate80-group14b-win\41-rate80-group14b-val_modspec_loss-win0.81356.webp" alt="rate80-group14b-win\41-rate80-group14b-val_modspec_loss-win0.81356.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\41-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\41-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\41-rate80-group14b-val_mrstft_dp4-win0.73373.webp">
+                    <img class="img-win" src="rate80-group14b-win\41-rate80-group14b-val_mrstft_dp4-win0.73373.webp" alt="rate80-group14b-win\41-rate80-group14b-val_mrstft_dp4-win0.73373.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\41-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\42-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\42-rate80-group11b-val_modspec_loss-win2.65264.webp">
+                    <img class="img-win" src="rate80-group11b-win\42-rate80-group11b-val_modspec_loss-win2.65264.webp" alt="rate80-group11b-win\42-rate80-group11b-val_modspec_loss-win2.65264.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\42-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\42-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\42-rate80-group12b-val_modspec_loss-win1.19416.webp">
+                    <img class="img-win" src="rate80-group12b-win\42-rate80-group12b-val_modspec_loss-win1.19416.webp" alt="rate80-group12b-win\42-rate80-group12b-val_modspec_loss-win1.19416.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\42-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\42-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\42-rate80-group12b-val_mrstft_dp4-win0.84704.webp">
+                    <img class="img-win" src="rate80-group12b-win\42-rate80-group12b-val_mrstft_dp4-win0.84704.webp" alt="rate80-group12b-win\42-rate80-group12b-val_mrstft_dp4-win0.84704.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\42-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\42-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\42-rate80-group14b-val_modspec_loss-win1.03980.webp">
+                    <img class="img-win" src="rate80-group14b-win\42-rate80-group14b-val_modspec_loss-win1.03980.webp" alt="rate80-group14b-win\42-rate80-group14b-val_modspec_loss-win1.03980.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\42-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\42-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\42-rate80-group14b-val_mrstft_dp4-win0.89917.webp">
+                    <img class="img-win" src="rate80-group14b-win\42-rate80-group14b-val_mrstft_dp4-win0.89917.webp" alt="rate80-group14b-win\42-rate80-group14b-val_mrstft_dp4-win0.89917.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\42-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\43-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\43-rate80-group11b-val_modspec_loss-win2.86137.webp">
+                    <img class="img-win" src="rate80-group11b-win\43-rate80-group11b-val_modspec_loss-win2.86137.webp" alt="rate80-group11b-win\43-rate80-group11b-val_modspec_loss-win2.86137.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\43-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\43-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\43-rate80-group12b-val_modspec_loss-win6.68690.webp">
+                    <img class="img-win" src="rate80-group12b-win\43-rate80-group12b-val_modspec_loss-win6.68690.webp" alt="rate80-group12b-win\43-rate80-group12b-val_modspec_loss-win6.68690.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\43-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\43-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\43-rate80-group12b-val_mrstft_dp4-win2.11599.webp">
+                    <img class="img-win" src="rate80-group12b-win\43-rate80-group12b-val_mrstft_dp4-win2.11599.webp" alt="rate80-group12b-win\43-rate80-group12b-val_mrstft_dp4-win2.11599.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\43-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\43-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\43-rate80-group14b-val_modspec_loss-win12.89906.webp">
+                    <img class="img-win" src="rate80-group14b-win\43-rate80-group14b-val_modspec_loss-win12.89906.webp" alt="rate80-group14b-win\43-rate80-group14b-val_modspec_loss-win12.89906.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\43-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\43-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\43-rate80-group14b-val_mrstft_dp4-win1.46138.webp">
+                    <img class="img-win" src="rate80-group14b-win\43-rate80-group14b-val_mrstft_dp4-win1.46138.webp" alt="rate80-group14b-win\43-rate80-group14b-val_mrstft_dp4-win1.46138.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\43-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\44-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\44-rate80-group11b-val_modspec_loss-win2.74995.webp">
+                    <img class="img-win" src="rate80-group11b-win\44-rate80-group11b-val_modspec_loss-win2.74995.webp" alt="rate80-group11b-win\44-rate80-group11b-val_modspec_loss-win2.74995.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\44-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\44-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\44-rate80-group12b-val_modspec_loss-win5.33481.webp">
+                    <img class="img-win" src="rate80-group12b-win\44-rate80-group12b-val_modspec_loss-win5.33481.webp" alt="rate80-group12b-win\44-rate80-group12b-val_modspec_loss-win5.33481.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\44-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\44-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\44-rate80-group12b-val_mrstft_dp4-win0.93214.webp">
+                    <img class="img-win" src="rate80-group12b-win\44-rate80-group12b-val_mrstft_dp4-win0.93214.webp" alt="rate80-group12b-win\44-rate80-group12b-val_mrstft_dp4-win0.93214.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\44-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\44-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\44-rate80-group14b-val_modspec_loss-win24.12132.webp">
+                    <img class="img-win" src="rate80-group14b-win\44-rate80-group14b-val_modspec_loss-win24.12132.webp" alt="rate80-group14b-win\44-rate80-group14b-val_modspec_loss-win24.12132.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\44-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\44-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\44-rate80-group14b-val_mrstft_dp4-win5.05363.webp">
+                    <img class="img-win" src="rate80-group14b-win\44-rate80-group14b-val_mrstft_dp4-win5.05363.webp" alt="rate80-group14b-win\44-rate80-group14b-val_mrstft_dp4-win5.05363.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\44-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\45-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\45-rate80-group11b-val_modspec_loss-win1.77605.webp">
+                    <img class="img-win" src="rate80-group11b-win\45-rate80-group11b-val_modspec_loss-win1.77605.webp" alt="rate80-group11b-win\45-rate80-group11b-val_modspec_loss-win1.77605.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\45-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\45-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\45-rate80-group12b-val_modspec_loss-win1.03481.webp">
+                    <img class="img-win" src="rate80-group12b-win\45-rate80-group12b-val_modspec_loss-win1.03481.webp" alt="rate80-group12b-win\45-rate80-group12b-val_modspec_loss-win1.03481.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\45-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\45-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\45-rate80-group12b-val_mrstft_dp4-win0.92387.webp">
+                    <img class="img-win" src="rate80-group12b-win\45-rate80-group12b-val_mrstft_dp4-win0.92387.webp" alt="rate80-group12b-win\45-rate80-group12b-val_mrstft_dp4-win0.92387.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\45-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\45-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\45-rate80-group14b-val_modspec_loss-win1.18248.webp">
+                    <img class="img-win" src="rate80-group14b-win\45-rate80-group14b-val_modspec_loss-win1.18248.webp" alt="rate80-group14b-win\45-rate80-group14b-val_modspec_loss-win1.18248.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\45-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\45-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\45-rate80-group14b-val_mrstft_dp4-win0.97345.webp">
+                    <img class="img-win" src="rate80-group14b-win\45-rate80-group14b-val_mrstft_dp4-win0.97345.webp" alt="rate80-group14b-win\45-rate80-group14b-val_mrstft_dp4-win0.97345.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\45-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\46-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\46-rate80-group11b-val_modspec_loss-win1.89697.webp">
+                    <img class="img-win" src="rate80-group11b-win\46-rate80-group11b-val_modspec_loss-win1.89697.webp" alt="rate80-group11b-win\46-rate80-group11b-val_modspec_loss-win1.89697.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\46-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\46-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\46-rate80-group12b-val_modspec_loss-win0.92138.webp">
+                    <img class="img-win" src="rate80-group12b-win\46-rate80-group12b-val_modspec_loss-win0.92138.webp" alt="rate80-group12b-win\46-rate80-group12b-val_modspec_loss-win0.92138.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\46-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\46-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\46-rate80-group12b-val_mrstft_dp4-win0.85583.webp">
+                    <img class="img-win" src="rate80-group12b-win\46-rate80-group12b-val_mrstft_dp4-win0.85583.webp" alt="rate80-group12b-win\46-rate80-group12b-val_mrstft_dp4-win0.85583.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\46-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\46-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\46-rate80-group14b-val_modspec_loss-win1.11211.webp">
+                    <img class="img-win" src="rate80-group14b-win\46-rate80-group14b-val_modspec_loss-win1.11211.webp" alt="rate80-group14b-win\46-rate80-group14b-val_modspec_loss-win1.11211.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\46-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\46-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\46-rate80-group14b-val_mrstft_dp4-win0.79598.webp">
+                    <img class="img-win" src="rate80-group14b-win\46-rate80-group14b-val_mrstft_dp4-win0.79598.webp" alt="rate80-group14b-win\46-rate80-group14b-val_mrstft_dp4-win0.79598.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\46-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\47-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\47-rate80-group11b-val_modspec_loss-win1.96947.webp">
+                    <img class="img-win" src="rate80-group11b-win\47-rate80-group11b-val_modspec_loss-win1.96947.webp" alt="rate80-group11b-win\47-rate80-group11b-val_modspec_loss-win1.96947.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\47-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\47-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\47-rate80-group12b-val_modspec_loss-win1.07816.webp">
+                    <img class="img-win" src="rate80-group12b-win\47-rate80-group12b-val_modspec_loss-win1.07816.webp" alt="rate80-group12b-win\47-rate80-group12b-val_modspec_loss-win1.07816.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\47-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\47-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\47-rate80-group12b-val_mrstft_dp4-win0.91921.webp">
+                    <img class="img-win" src="rate80-group12b-win\47-rate80-group12b-val_mrstft_dp4-win0.91921.webp" alt="rate80-group12b-win\47-rate80-group12b-val_mrstft_dp4-win0.91921.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\47-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\47-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\47-rate80-group14b-val_modspec_loss-win0.99383.webp">
+                    <img class="img-win" src="rate80-group14b-win\47-rate80-group14b-val_modspec_loss-win0.99383.webp" alt="rate80-group14b-win\47-rate80-group14b-val_modspec_loss-win0.99383.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\47-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\47-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\47-rate80-group14b-val_mrstft_dp4-win0.91718.webp">
+                    <img class="img-win" src="rate80-group14b-win\47-rate80-group14b-val_mrstft_dp4-win0.91718.webp" alt="rate80-group14b-win\47-rate80-group14b-val_mrstft_dp4-win0.91718.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\47-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\60-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\60-rate80-group11b-val_modspec_loss-win2.07156.webp">
+                    <img class="img-win" src="rate80-group11b-win\60-rate80-group11b-val_modspec_loss-win2.07156.webp" alt="rate80-group11b-win\60-rate80-group11b-val_modspec_loss-win2.07156.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\60-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\60-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\60-rate80-group12b-val_modspec_loss-win1.06682.webp">
+                    <img class="img-win" src="rate80-group12b-win\60-rate80-group12b-val_modspec_loss-win1.06682.webp" alt="rate80-group12b-win\60-rate80-group12b-val_modspec_loss-win1.06682.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\60-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\60-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\60-rate80-group12b-val_mrstft_dp4-win0.85742.webp">
+                    <img class="img-win" src="rate80-group12b-win\60-rate80-group12b-val_mrstft_dp4-win0.85742.webp" alt="rate80-group12b-win\60-rate80-group12b-val_mrstft_dp4-win0.85742.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\60-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\60-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\60-rate80-group14b-val_modspec_loss-win0.84565.webp">
+                    <img class="img-win" src="rate80-group14b-win\60-rate80-group14b-val_modspec_loss-win0.84565.webp" alt="rate80-group14b-win\60-rate80-group14b-val_modspec_loss-win0.84565.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\60-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\60-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\60-rate80-group14b-val_mrstft_dp4-win0.85467.webp">
+                    <img class="img-win" src="rate80-group14b-win\60-rate80-group14b-val_mrstft_dp4-win0.85467.webp" alt="rate80-group14b-win\60-rate80-group14b-val_mrstft_dp4-win0.85467.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\60-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\61-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\61-rate80-group11b-val_modspec_loss-win2.01721.webp">
+                    <img class="img-win" src="rate80-group11b-win\61-rate80-group11b-val_modspec_loss-win2.01721.webp" alt="rate80-group11b-win\61-rate80-group11b-val_modspec_loss-win2.01721.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\61-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\61-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\61-rate80-group12b-val_modspec_loss-win1.22778.webp">
+                    <img class="img-win" src="rate80-group12b-win\61-rate80-group12b-val_modspec_loss-win1.22778.webp" alt="rate80-group12b-win\61-rate80-group12b-val_modspec_loss-win1.22778.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\61-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\61-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\61-rate80-group12b-val_mrstft_dp4-win0.85039.webp">
+                    <img class="img-win" src="rate80-group12b-win\61-rate80-group12b-val_mrstft_dp4-win0.85039.webp" alt="rate80-group12b-win\61-rate80-group12b-val_mrstft_dp4-win0.85039.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\61-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\61-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\61-rate80-group14b-val_modspec_loss-win0.90152.webp">
+                    <img class="img-win" src="rate80-group14b-win\61-rate80-group14b-val_modspec_loss-win0.90152.webp" alt="rate80-group14b-win\61-rate80-group14b-val_modspec_loss-win0.90152.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\61-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\61-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\61-rate80-group14b-val_mrstft_dp4-win0.89586.webp">
+                    <img class="img-win" src="rate80-group14b-win\61-rate80-group14b-val_mrstft_dp4-win0.89586.webp" alt="rate80-group14b-win\61-rate80-group14b-val_mrstft_dp4-win0.89586.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\61-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\62-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\62-rate80-group11b-val_modspec_loss-win1.76037.webp">
+                    <img class="img-win" src="rate80-group11b-win\62-rate80-group11b-val_modspec_loss-win1.76037.webp" alt="rate80-group11b-win\62-rate80-group11b-val_modspec_loss-win1.76037.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\62-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\62-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\62-rate80-group12b-val_modspec_loss-win1.38297.webp">
+                    <img class="img-win" src="rate80-group12b-win\62-rate80-group12b-val_modspec_loss-win1.38297.webp" alt="rate80-group12b-win\62-rate80-group12b-val_modspec_loss-win1.38297.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\62-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\62-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\62-rate80-group12b-val_mrstft_dp4-win1.00852.webp">
+                    <img class="img-win" src="rate80-group12b-win\62-rate80-group12b-val_mrstft_dp4-win1.00852.webp" alt="rate80-group12b-win\62-rate80-group12b-val_mrstft_dp4-win1.00852.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\62-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\62-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\62-rate80-group14b-val_modspec_loss-win1.00133.webp">
+                    <img class="img-win" src="rate80-group14b-win\62-rate80-group14b-val_modspec_loss-win1.00133.webp" alt="rate80-group14b-win\62-rate80-group14b-val_modspec_loss-win1.00133.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\62-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\62-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\62-rate80-group14b-val_mrstft_dp4-win0.94786.webp">
+                    <img class="img-win" src="rate80-group14b-win\62-rate80-group14b-val_mrstft_dp4-win0.94786.webp" alt="rate80-group14b-win\62-rate80-group14b-val_mrstft_dp4-win0.94786.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\62-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\63-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\63-rate80-group11b-val_modspec_loss-win2.66847.webp">
+                    <img class="img-win" src="rate80-group11b-win\63-rate80-group11b-val_modspec_loss-win2.66847.webp" alt="rate80-group11b-win\63-rate80-group11b-val_modspec_loss-win2.66847.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\63-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\63-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\63-rate80-group12b-val_modspec_loss-win0.88864.webp">
+                    <img class="img-win" src="rate80-group12b-win\63-rate80-group12b-val_modspec_loss-win0.88864.webp" alt="rate80-group12b-win\63-rate80-group12b-val_modspec_loss-win0.88864.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\63-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\63-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\63-rate80-group12b-val_mrstft_dp4-win0.87640.webp">
+                    <img class="img-win" src="rate80-group12b-win\63-rate80-group12b-val_mrstft_dp4-win0.87640.webp" alt="rate80-group12b-win\63-rate80-group12b-val_mrstft_dp4-win0.87640.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\63-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\63-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\63-rate80-group14b-val_modspec_loss-win1.69315.webp">
+                    <img class="img-win" src="rate80-group14b-win\63-rate80-group14b-val_modspec_loss-win1.69315.webp" alt="rate80-group14b-win\63-rate80-group14b-val_modspec_loss-win1.69315.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\63-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\63-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\63-rate80-group14b-val_mrstft_dp4-win1.37258.webp">
+                    <img class="img-win" src="rate80-group14b-win\63-rate80-group14b-val_mrstft_dp4-win1.37258.webp" alt="rate80-group14b-win\63-rate80-group14b-val_mrstft_dp4-win1.37258.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\63-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\64-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\64-rate80-group11b-val_modspec_loss-win2.29927.webp">
+                    <img class="img-win" src="rate80-group11b-win\64-rate80-group11b-val_modspec_loss-win2.29927.webp" alt="rate80-group11b-win\64-rate80-group11b-val_modspec_loss-win2.29927.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\64-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\64-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\64-rate80-group12b-val_modspec_loss-win1.59774.webp">
+                    <img class="img-win" src="rate80-group12b-win\64-rate80-group12b-val_modspec_loss-win1.59774.webp" alt="rate80-group12b-win\64-rate80-group12b-val_modspec_loss-win1.59774.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\64-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\64-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\64-rate80-group12b-val_mrstft_dp4-win1.00344.webp">
+                    <img class="img-win" src="rate80-group12b-win\64-rate80-group12b-val_mrstft_dp4-win1.00344.webp" alt="rate80-group12b-win\64-rate80-group12b-val_mrstft_dp4-win1.00344.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\64-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\64-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\64-rate80-group14b-val_modspec_loss-win0.77353.webp">
+                    <img class="img-win" src="rate80-group14b-win\64-rate80-group14b-val_modspec_loss-win0.77353.webp" alt="rate80-group14b-win\64-rate80-group14b-val_modspec_loss-win0.77353.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\64-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\64-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\64-rate80-group14b-val_mrstft_dp4-win0.84229.webp">
+                    <img class="img-win" src="rate80-group14b-win\64-rate80-group14b-val_mrstft_dp4-win0.84229.webp" alt="rate80-group14b-win\64-rate80-group14b-val_mrstft_dp4-win0.84229.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\64-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\65-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\65-rate80-group11b-val_modspec_loss-win2.84174.webp">
+                    <img class="img-win" src="rate80-group11b-win\65-rate80-group11b-val_modspec_loss-win2.84174.webp" alt="rate80-group11b-win\65-rate80-group11b-val_modspec_loss-win2.84174.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\65-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\65-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\65-rate80-group12b-val_modspec_loss-win0.90450.webp">
+                    <img class="img-win" src="rate80-group12b-win\65-rate80-group12b-val_modspec_loss-win0.90450.webp" alt="rate80-group12b-win\65-rate80-group12b-val_modspec_loss-win0.90450.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\65-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\65-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\65-rate80-group12b-val_mrstft_dp4-win1.06183.webp">
+                    <img class="img-win" src="rate80-group12b-win\65-rate80-group12b-val_mrstft_dp4-win1.06183.webp" alt="rate80-group12b-win\65-rate80-group12b-val_mrstft_dp4-win1.06183.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\65-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\65-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\65-rate80-group14b-val_modspec_loss-win1.14984.webp">
+                    <img class="img-win" src="rate80-group14b-win\65-rate80-group14b-val_modspec_loss-win1.14984.webp" alt="rate80-group14b-win\65-rate80-group14b-val_modspec_loss-win1.14984.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\65-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\65-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\65-rate80-group14b-val_mrstft_dp4-win0.94330.webp">
+                    <img class="img-win" src="rate80-group14b-win\65-rate80-group14b-val_mrstft_dp4-win0.94330.webp" alt="rate80-group14b-win\65-rate80-group14b-val_mrstft_dp4-win0.94330.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\65-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\66-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\66-rate80-group11b-val_modspec_loss-win2.66863.webp">
+                    <img class="img-win" src="rate80-group11b-win\66-rate80-group11b-val_modspec_loss-win2.66863.webp" alt="rate80-group11b-win\66-rate80-group11b-val_modspec_loss-win2.66863.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\66-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\66-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\66-rate80-group12b-val_modspec_loss-win1.55605.webp">
+                    <img class="img-win" src="rate80-group12b-win\66-rate80-group12b-val_modspec_loss-win1.55605.webp" alt="rate80-group12b-win\66-rate80-group12b-val_modspec_loss-win1.55605.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\66-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\66-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\66-rate80-group12b-val_mrstft_dp4-win1.00207.webp">
+                    <img class="img-win" src="rate80-group12b-win\66-rate80-group12b-val_mrstft_dp4-win1.00207.webp" alt="rate80-group12b-win\66-rate80-group12b-val_mrstft_dp4-win1.00207.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\66-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\66-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\66-rate80-group14b-val_modspec_loss-win0.98063.webp">
+                    <img class="img-win" src="rate80-group14b-win\66-rate80-group14b-val_modspec_loss-win0.98063.webp" alt="rate80-group14b-win\66-rate80-group14b-val_modspec_loss-win0.98063.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\66-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\66-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\66-rate80-group14b-val_mrstft_dp4-win0.93097.webp">
+                    <img class="img-win" src="rate80-group14b-win\66-rate80-group14b-val_mrstft_dp4-win0.93097.webp" alt="rate80-group14b-win\66-rate80-group14b-val_mrstft_dp4-win0.93097.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\66-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\67-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\67-rate80-group11b-val_modspec_loss-win7.18532.webp">
+                    <img class="img-win" src="rate80-group11b-win\67-rate80-group11b-val_modspec_loss-win7.18532.webp" alt="rate80-group11b-win\67-rate80-group11b-val_modspec_loss-win7.18532.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\67-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\67-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\67-rate80-group12b-val_modspec_loss-win2.83014.webp">
+                    <img class="img-win" src="rate80-group12b-win\67-rate80-group12b-val_modspec_loss-win2.83014.webp" alt="rate80-group12b-win\67-rate80-group12b-val_modspec_loss-win2.83014.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\67-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\67-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\67-rate80-group12b-val_mrstft_dp4-win3.04018.webp">
+                    <img class="img-win" src="rate80-group12b-win\67-rate80-group12b-val_mrstft_dp4-win3.04018.webp" alt="rate80-group12b-win\67-rate80-group12b-val_mrstft_dp4-win3.04018.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\67-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\67-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\67-rate80-group14b-val_modspec_loss-win2.07548.webp">
+                    <img class="img-win" src="rate80-group14b-win\67-rate80-group14b-val_modspec_loss-win2.07548.webp" alt="rate80-group14b-win\67-rate80-group14b-val_modspec_loss-win2.07548.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\67-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\67-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\67-rate80-group14b-val_mrstft_dp4-win2.76279.webp">
+                    <img class="img-win" src="rate80-group14b-win\67-rate80-group14b-val_mrstft_dp4-win2.76279.webp" alt="rate80-group14b-win\67-rate80-group14b-val_mrstft_dp4-win2.76279.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\67-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\68-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\68-rate80-group11b-val_modspec_loss-win2.76135.webp">
+                    <img class="img-win" src="rate80-group11b-win\68-rate80-group11b-val_modspec_loss-win2.76135.webp" alt="rate80-group11b-win\68-rate80-group11b-val_modspec_loss-win2.76135.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\68-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\68-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\68-rate80-group12b-val_modspec_loss-win1.73838.webp">
+                    <img class="img-win" src="rate80-group12b-win\68-rate80-group12b-val_modspec_loss-win1.73838.webp" alt="rate80-group12b-win\68-rate80-group12b-val_modspec_loss-win1.73838.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\68-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\68-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\68-rate80-group12b-val_mrstft_dp4-win3.37835.webp">
+                    <img class="img-win" src="rate80-group12b-win\68-rate80-group12b-val_mrstft_dp4-win3.37835.webp" alt="rate80-group12b-win\68-rate80-group12b-val_mrstft_dp4-win3.37835.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\68-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\68-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\68-rate80-group14b-val_modspec_loss-win22.31882.webp">
+                    <img class="img-win" src="rate80-group14b-win\68-rate80-group14b-val_modspec_loss-win22.31882.webp" alt="rate80-group14b-win\68-rate80-group14b-val_modspec_loss-win22.31882.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\68-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\68-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\68-rate80-group14b-val_mrstft_dp4-win1.01377.webp">
+                    <img class="img-win" src="rate80-group14b-win\68-rate80-group14b-val_mrstft_dp4-win1.01377.webp" alt="rate80-group14b-win\68-rate80-group14b-val_mrstft_dp4-win1.01377.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\68-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\69-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\69-rate80-group11b-val_modspec_loss-win2.01275.webp">
+                    <img class="img-win" src="rate80-group11b-win\69-rate80-group11b-val_modspec_loss-win2.01275.webp" alt="rate80-group11b-win\69-rate80-group11b-val_modspec_loss-win2.01275.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\69-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\69-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\69-rate80-group12b-val_modspec_loss-win0.84825.webp">
+                    <img class="img-win" src="rate80-group12b-win\69-rate80-group12b-val_modspec_loss-win0.84825.webp" alt="rate80-group12b-win\69-rate80-group12b-val_modspec_loss-win0.84825.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\69-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\69-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\69-rate80-group12b-val_mrstft_dp4-win0.77143.webp">
+                    <img class="img-win" src="rate80-group12b-win\69-rate80-group12b-val_mrstft_dp4-win0.77143.webp" alt="rate80-group12b-win\69-rate80-group12b-val_mrstft_dp4-win0.77143.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\69-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\69-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\69-rate80-group14b-val_modspec_loss-win0.81137.webp">
+                    <img class="img-win" src="rate80-group14b-win\69-rate80-group14b-val_modspec_loss-win0.81137.webp" alt="rate80-group14b-win\69-rate80-group14b-val_modspec_loss-win0.81137.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\69-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\69-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\69-rate80-group14b-val_mrstft_dp4-win0.93682.webp">
+                    <img class="img-win" src="rate80-group14b-win\69-rate80-group14b-val_mrstft_dp4-win0.93682.webp" alt="rate80-group14b-win\69-rate80-group14b-val_mrstft_dp4-win0.93682.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\69-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\70-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\70-rate80-group11b-val_modspec_loss-win1.99077.webp">
+                    <img class="img-win" src="rate80-group11b-win\70-rate80-group11b-val_modspec_loss-win1.99077.webp" alt="rate80-group11b-win\70-rate80-group11b-val_modspec_loss-win1.99077.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\70-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\70-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\70-rate80-group12b-val_modspec_loss-win1.11919.webp">
+                    <img class="img-win" src="rate80-group12b-win\70-rate80-group12b-val_modspec_loss-win1.11919.webp" alt="rate80-group12b-win\70-rate80-group12b-val_modspec_loss-win1.11919.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\70-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\70-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\70-rate80-group12b-val_mrstft_dp4-win0.87884.webp">
+                    <img class="img-win" src="rate80-group12b-win\70-rate80-group12b-val_mrstft_dp4-win0.87884.webp" alt="rate80-group12b-win\70-rate80-group12b-val_mrstft_dp4-win0.87884.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\70-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\70-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\70-rate80-group14b-val_modspec_loss-win1.11220.webp">
+                    <img class="img-win" src="rate80-group14b-win\70-rate80-group14b-val_modspec_loss-win1.11220.webp" alt="rate80-group14b-win\70-rate80-group14b-val_modspec_loss-win1.11220.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\70-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\70-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\70-rate80-group14b-val_mrstft_dp4-win0.99413.webp">
+                    <img class="img-win" src="rate80-group14b-win\70-rate80-group14b-val_mrstft_dp4-win0.99413.webp" alt="rate80-group14b-win\70-rate80-group14b-val_mrstft_dp4-win0.99413.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\70-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\71-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\71-rate80-group11b-val_modspec_loss-win2.37956.webp">
+                    <img class="img-win" src="rate80-group11b-win\71-rate80-group11b-val_modspec_loss-win2.37956.webp" alt="rate80-group11b-win\71-rate80-group11b-val_modspec_loss-win2.37956.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\71-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\71-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\71-rate80-group12b-val_modspec_loss-win0.93803.webp">
+                    <img class="img-win" src="rate80-group12b-win\71-rate80-group12b-val_modspec_loss-win0.93803.webp" alt="rate80-group12b-win\71-rate80-group12b-val_modspec_loss-win0.93803.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\71-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\71-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\71-rate80-group12b-val_mrstft_dp4-win0.85353.webp">
+                    <img class="img-win" src="rate80-group12b-win\71-rate80-group12b-val_mrstft_dp4-win0.85353.webp" alt="rate80-group12b-win\71-rate80-group12b-val_mrstft_dp4-win0.85353.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\71-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\71-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\71-rate80-group14b-val_modspec_loss-win0.67182.webp">
+                    <img class="img-win" src="rate80-group14b-win\71-rate80-group14b-val_modspec_loss-win0.67182.webp" alt="rate80-group14b-win\71-rate80-group14b-val_modspec_loss-win0.67182.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\71-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\71-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\71-rate80-group14b-val_mrstft_dp4-win0.92726.webp">
+                    <img class="img-win" src="rate80-group14b-win\71-rate80-group14b-val_mrstft_dp4-win0.92726.webp" alt="rate80-group14b-win\71-rate80-group14b-val_mrstft_dp4-win0.92726.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\71-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\73-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\73-rate80-group11b-val_modspec_loss-win1.80231.webp">
+                    <img class="img-win" src="rate80-group11b-win\73-rate80-group11b-val_modspec_loss-win1.80231.webp" alt="rate80-group11b-win\73-rate80-group11b-val_modspec_loss-win1.80231.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\73-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\73-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\73-rate80-group12b-val_modspec_loss-win0.72010.webp">
+                    <img class="img-win" src="rate80-group12b-win\73-rate80-group12b-val_modspec_loss-win0.72010.webp" alt="rate80-group12b-win\73-rate80-group12b-val_modspec_loss-win0.72010.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\73-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\73-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\73-rate80-group12b-val_mrstft_dp4-win1.00827.webp">
+                    <img class="img-win" src="rate80-group12b-win\73-rate80-group12b-val_mrstft_dp4-win1.00827.webp" alt="rate80-group12b-win\73-rate80-group12b-val_mrstft_dp4-win1.00827.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\73-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\73-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\73-rate80-group14b-val_modspec_loss-win1.12101.webp">
+                    <img class="img-win" src="rate80-group14b-win\73-rate80-group14b-val_modspec_loss-win1.12101.webp" alt="rate80-group14b-win\73-rate80-group14b-val_modspec_loss-win1.12101.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\73-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\73-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\73-rate80-group14b-val_mrstft_dp4-win0.68057.webp">
+                    <img class="img-win" src="rate80-group14b-win\73-rate80-group14b-val_mrstft_dp4-win0.68057.webp" alt="rate80-group14b-win\73-rate80-group14b-val_mrstft_dp4-win0.68057.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\73-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\75-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\75-rate80-group11b-val_modspec_loss-win1.97334.webp">
+                    <img class="img-win" src="rate80-group11b-win\75-rate80-group11b-val_modspec_loss-win1.97334.webp" alt="rate80-group11b-win\75-rate80-group11b-val_modspec_loss-win1.97334.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\75-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\75-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\75-rate80-group12b-val_modspec_loss-win0.86032.webp">
+                    <img class="img-win" src="rate80-group12b-win\75-rate80-group12b-val_modspec_loss-win0.86032.webp" alt="rate80-group12b-win\75-rate80-group12b-val_modspec_loss-win0.86032.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\75-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\75-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\75-rate80-group12b-val_mrstft_dp4-win0.95532.webp">
+                    <img class="img-win" src="rate80-group12b-win\75-rate80-group12b-val_mrstft_dp4-win0.95532.webp" alt="rate80-group12b-win\75-rate80-group12b-val_mrstft_dp4-win0.95532.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\75-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\75-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\75-rate80-group14b-val_modspec_loss-win0.81698.webp">
+                    <img class="img-win" src="rate80-group14b-win\75-rate80-group14b-val_modspec_loss-win0.81698.webp" alt="rate80-group14b-win\75-rate80-group14b-val_modspec_loss-win0.81698.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\75-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\75-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\75-rate80-group14b-val_mrstft_dp4-win0.77584.webp">
+                    <img class="img-win" src="rate80-group14b-win\75-rate80-group14b-val_mrstft_dp4-win0.77584.webp" alt="rate80-group14b-win\75-rate80-group14b-val_mrstft_dp4-win0.77584.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\75-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\77-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\77-rate80-group11b-val_modspec_loss-win2.45208.webp">
+                    <img class="img-win" src="rate80-group11b-win\77-rate80-group11b-val_modspec_loss-win2.45208.webp" alt="rate80-group11b-win\77-rate80-group11b-val_modspec_loss-win2.45208.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\77-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\77-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\77-rate80-group12b-val_modspec_loss-win0.96660.webp">
+                    <img class="img-win" src="rate80-group12b-win\77-rate80-group12b-val_modspec_loss-win0.96660.webp" alt="rate80-group12b-win\77-rate80-group12b-val_modspec_loss-win0.96660.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\77-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\77-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\77-rate80-group12b-val_mrstft_dp4-win0.82965.webp">
+                    <img class="img-win" src="rate80-group12b-win\77-rate80-group12b-val_mrstft_dp4-win0.82965.webp" alt="rate80-group12b-win\77-rate80-group12b-val_mrstft_dp4-win0.82965.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\77-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\77-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\77-rate80-group14b-val_modspec_loss-win0.88614.webp">
+                    <img class="img-win" src="rate80-group14b-win\77-rate80-group14b-val_modspec_loss-win0.88614.webp" alt="rate80-group14b-win\77-rate80-group14b-val_modspec_loss-win0.88614.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\77-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\77-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\77-rate80-group14b-val_mrstft_dp4-win1.06293.webp">
+                    <img class="img-win" src="rate80-group14b-win\77-rate80-group14b-val_mrstft_dp4-win1.06293.webp" alt="rate80-group14b-win\77-rate80-group14b-val_mrstft_dp4-win1.06293.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\77-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\79-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\79-rate80-group11b-val_modspec_loss-win2.00177.webp">
+                    <img class="img-win" src="rate80-group11b-win\79-rate80-group11b-val_modspec_loss-win2.00177.webp" alt="rate80-group11b-win\79-rate80-group11b-val_modspec_loss-win2.00177.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\79-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\79-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\79-rate80-group12b-val_modspec_loss-win1.09493.webp">
+                    <img class="img-win" src="rate80-group12b-win\79-rate80-group12b-val_modspec_loss-win1.09493.webp" alt="rate80-group12b-win\79-rate80-group12b-val_modspec_loss-win1.09493.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\79-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\79-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\79-rate80-group12b-val_mrstft_dp4-win0.90902.webp">
+                    <img class="img-win" src="rate80-group12b-win\79-rate80-group12b-val_mrstft_dp4-win0.90902.webp" alt="rate80-group12b-win\79-rate80-group12b-val_mrstft_dp4-win0.90902.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\79-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\79-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\79-rate80-group14b-val_modspec_loss-win0.96968.webp">
+                    <img class="img-win" src="rate80-group14b-win\79-rate80-group14b-val_modspec_loss-win0.96968.webp" alt="rate80-group14b-win\79-rate80-group14b-val_modspec_loss-win0.96968.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\79-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\79-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\79-rate80-group14b-val_mrstft_dp4-win0.92862.webp">
+                    <img class="img-win" src="rate80-group14b-win\79-rate80-group14b-val_mrstft_dp4-win0.92862.webp" alt="rate80-group14b-win\79-rate80-group14b-val_mrstft_dp4-win0.92862.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\79-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\81-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\81-rate80-group11b-val_modspec_loss-win1.84733.webp">
+                    <img class="img-win" src="rate80-group11b-win\81-rate80-group11b-val_modspec_loss-win1.84733.webp" alt="rate80-group11b-win\81-rate80-group11b-val_modspec_loss-win1.84733.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\81-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\81-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\81-rate80-group12b-val_modspec_loss-win0.73214.webp">
+                    <img class="img-win" src="rate80-group12b-win\81-rate80-group12b-val_modspec_loss-win0.73214.webp" alt="rate80-group12b-win\81-rate80-group12b-val_modspec_loss-win0.73214.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\81-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\81-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\81-rate80-group12b-val_mrstft_dp4-win0.78312.webp">
+                    <img class="img-win" src="rate80-group12b-win\81-rate80-group12b-val_mrstft_dp4-win0.78312.webp" alt="rate80-group12b-win\81-rate80-group12b-val_mrstft_dp4-win0.78312.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\81-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\81-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\81-rate80-group14b-val_modspec_loss-win0.82944.webp">
+                    <img class="img-win" src="rate80-group14b-win\81-rate80-group14b-val_modspec_loss-win0.82944.webp" alt="rate80-group14b-win\81-rate80-group14b-val_modspec_loss-win0.82944.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\81-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\81-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\81-rate80-group14b-val_mrstft_dp4-win0.71065.webp">
+                    <img class="img-win" src="rate80-group14b-win\81-rate80-group14b-val_mrstft_dp4-win0.71065.webp" alt="rate80-group14b-win\81-rate80-group14b-val_mrstft_dp4-win0.71065.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\81-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+            <tr>
+                
+                <td>
+                    <img class="img-full" src="rate80-group11b-full\83-rate80-group11b-val_modspec_loss.webp" alt="rate80-group11b-win\83-rate80-group11b-val_modspec_loss-win2.20981.webp">
+                    <img class="img-win" src="rate80-group11b-win\83-rate80-group11b-val_modspec_loss-win2.20981.webp" alt="rate80-group11b-win\83-rate80-group11b-val_modspec_loss-win2.20981.webp" hidden>
+                    <br>
+                    <audio src="rate80-group11b-full\83-rate80-group11b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\83-rate80-group12b-val_modspec_loss.webp" alt="rate80-group12b-win\83-rate80-group12b-val_modspec_loss-win0.88576.webp">
+                    <img class="img-win" src="rate80-group12b-win\83-rate80-group12b-val_modspec_loss-win0.88576.webp" alt="rate80-group12b-win\83-rate80-group12b-val_modspec_loss-win0.88576.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\83-rate80-group12b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group12b-full\83-rate80-group12b-val_mrstft_dp4.webp" alt="rate80-group12b-win\83-rate80-group12b-val_mrstft_dp4-win0.84068.webp">
+                    <img class="img-win" src="rate80-group12b-win\83-rate80-group12b-val_mrstft_dp4-win0.84068.webp" alt="rate80-group12b-win\83-rate80-group12b-val_mrstft_dp4-win0.84068.webp" hidden>
+                    <br>
+                    <audio src="rate80-group12b-full\83-rate80-group12b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\83-rate80-group14b-val_modspec_loss.webp" alt="rate80-group14b-win\83-rate80-group14b-val_modspec_loss-win1.72461.webp">
+                    <img class="img-win" src="rate80-group14b-win\83-rate80-group14b-val_modspec_loss-win1.72461.webp" alt="rate80-group14b-win\83-rate80-group14b-val_modspec_loss-win1.72461.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\83-rate80-group14b-val_modspec_loss.norm.flac" controls preload="none"></audio>
+                </td>
+                
+                <td>
+                    <img class="img-full" src="rate80-group14b-full\83-rate80-group14b-val_mrstft_dp4.webp" alt="rate80-group14b-win\83-rate80-group14b-val_mrstft_dp4-win0.97551.webp">
+                    <img class="img-win" src="rate80-group14b-win\83-rate80-group14b-val_mrstft_dp4-win0.97551.webp" alt="rate80-group14b-win\83-rate80-group14b-val_mrstft_dp4-win0.97551.webp" hidden>
+                    <br>
+                    <audio src="rate80-group14b-full\83-rate80-group14b-val_mrstft_dp4.norm.flac" controls preload="none"></audio>
+                </td>
+                
+            </tr>
+            
+        </table>
+    </body>
+</html>
