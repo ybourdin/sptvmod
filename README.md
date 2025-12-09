@@ -1,10 +1,10 @@
-# Series-Parallel Time-Variant Modulation (SPTMod)
+# Series-Parallel Time-Variant Modulation (SPTVMod)
 
 This repository contains the PyTorch implementation of SPTVMod used for the December 2025 pre-print paper *Time-Varying Audio Effect Modeling By End-to-End Adversarial Training* authored by Y. Bourdin, P. Legrand and F. Roche.
 
 ## Architecture
 
-| ![Figure of State prediction network (SPN) and SPTMod](attachments/sptvmod_1.svg) | ![Figure of ModBlock in SPTMod](attachments/sptvmod_2.svg) |
+| ![SPTVMod (ModBlocks, FXBlocks and FeatBlocks)](attachments/sptvmod_1.svg) | ![SPTVMod (SPN and discriminator)](attachments/sptvmod_2.svg) |
 | :---: | :---: |
 | (1a) | (1b) |
 
@@ -15,7 +15,6 @@ This repository contains the PyTorch implementation of SPTVMod used for the Dece
 *Figure 2b*. Composition of the processing blocks: ModBlock (left), FXBlock (upper right) and FeatBlock (lower right).
 
 ## Training
-
 
 
 - Use the `set_target_length()` method to compute:
